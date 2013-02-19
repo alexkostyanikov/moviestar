@@ -15,8 +15,8 @@ namespace ProtoScreenCaptureApp.Helpers
         private static readonly string AccountKey = ConfigurationManager.AppSettings["accountKey"];
         private static readonly string AccountName = ConfigurationManager.AppSettings["accountName"];
         private const string SmoothStreamingPreset = "VC1 Smooth Streaming 720p";
-        private const string Mpeg4Preset = "H264 Broadband 720p"; // see more: http://msdn.microsoft.com/en-us/library/windowsazure/jj129582.aspx
-         
+        private const string Mpeg4Preset = "H264 Broadband 720p";
+
         static private IAsset CreateEmptyAsset(string assetName, AssetCreationOptions assetCreationOptions)
         {
             var asset = default(IAsset);
@@ -51,6 +51,7 @@ namespace ProtoScreenCaptureApp.Helpers
             var job = _context.Jobs.Create("Screen capture encoding job");
             var processor = GetLatestMediaProcessorByName("Windows Azure Media Encoder");
             var task = job.Tasks.AddNew("My encoding task", processor, Mpeg4Preset, TaskOptions.ProtectedConfiguration);
+
             task.InputAssets.Add(asset);
             task.OutputAssets.AddNew("Output asset", AssetCreationOptions.None);
             job.StateChanged += (sender, e) => CurrentConvertStateChanged(e, updateStatus);
