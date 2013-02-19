@@ -1,0 +1,125 @@
+﻿@model dynamic
+
+@{
+    ViewBag.Title = "title";
+    Layout = "~/Views/shared/_BootstrapLayout.narrow.cshtml";
+}
+
+<hr>
+<div class="row">
+    <div class="span4">
+        <h2>Video1</h2>
+        <div class="videoUiWrapper thumbnail">
+            <video width="370" height="214" id="video1">
+                <source src="https://mediasvc0mxpj16bgq1x0.blob.core.windows.net/asset-d30aba9b-2c93-44f7-b25d-93d269b3471e/ScreenCapture_2-15-2013%2011.08.00%20AM.mp4?st=2013-02-15T07%3A08%3A39Z&se=2013-03-17T07%3A08%3A39Z&sr=c&si=f150f776-0cd7-440a-9485-f1ddc4e88dfc&sig=oSuzk3kt14KJ2BtHHk5gay8PjfxRrrfbN%2FWPRsWn%2Fpc%3D" type="video/mp4">
+                Your browser does not support the video tag.
+            </video>
+        </div>
+        <p>
+            <a class="btn play" href="#" data-videoContainer="#video1">play</a>
+            <a class="btn pause" href="#" data-videoContainer="#video1">pause</a>
+        </p>
+    </div>
+    <div class="span4">
+        <h2>Video2</h2>
+        <div class="videoUiWrapper thumbnail">
+            <video width="370" height="214" id="video2">
+                <source src="https://mediasvc0mxpj16bgq1x0.blob.core.windows.net/asset-ba3695d4-5812-4eb2-a8f2-64e3a3ddf5ad/ScreenCapture_2-15-2013%2011.08.07%20AM.mp4?st=2013-02-15T07%3A05%3A51Z&se=2013-03-17T07%3A05%3A51Z&sr=c&si=16317e61-a575-4564-8d0c-ce6cc5053f3d&sig=3ZhEQz7V9C86npCTjza702cEoE2efDF02UmxjvSwY6E%3D" type="video/mp4">
+                Your browser does not support the video tag.
+            </video>
+        </div>
+        <p>
+            <a class="btn play" href="#" data-videoContainer="#video2">play</a>
+            <a class="btn pause" href="#" data-videoContainer="#video2">pause</a>
+        </p>
+    </div>
+    <div class="span3">
+        <h2>Video3</h2>
+        <div class="videoUiWrapper thumbnail">
+            <video width="370" height="214" id="video3">
+                <source src="https://mediasvc0mxpj16bgq1x0.blob.core.windows.net/asset-6ca6daa8-91f2-4293-85cd-33f4535946cf/ScreenCapture_2-14-2013%205.31.37%20PM.mp4?st=2013-02-14T13%3A28%3A22Z&se=2013-03-16T13%3A28%3A22Z&sr=c&si=4cc882af-d1d6-4f8b-9984-4cdd4f2346bc&sig=OvBV1KQYYLOeGuq0AAGXkipirGTnTDzp2O9z2FvxPdo%3D" type="video/mp4">
+                Your browser does not support the video tag.
+            </video>
+        </div>
+        <p>
+            <a class="btn play" href="#" data-videoContainer="#video3">play</a>
+            <a class="btn pause" href="#" data-videoContainer="#video3">pause</a>
+        </p>
+    </div>
+    <div class="span3">
+        <h2>silverlight video</h2>
+        <object data="data:application/x-silverlight-2," type="application/x-silverlight-2" width="370" height="214">
+            <param name="source" value="ClientBin/SmoothStreamingPlayer.xap" />
+            <param name="onError" value="onSilverlightError" />
+            <param name="background" value="white" />
+            <param name="minRuntimeVersion" value="4.0.50401.0" />
+            <param name="autoUpgrade" value="true" />
+            <param name="InitParams" value="selectedcaptionstream=textstream_eng,mediaurl=http://screencaptureservice.origin.mediaservices.windows.net/05ef457c-f1a7-4626-a9e9-3c875050a79d/ScreenCapture_2-15-2013%204.55.47%20PM.ism/Manifest" />
+            <a href="http://go.microsoft.com/fwlink/?LinkID=149156&v=4.0.50401.0" style="text-decoration: none">
+                <img src="http://go.microsoft.com/fwlink/?LinkId=161376" alt="Get Microsoft Silverlight" style="border-style: none" />
+            </a>
+        </object>
+        <p>
+            <a class="btn play" href="#" data-videocontainer="#video3">play</a>
+            <a class="btn pause" href="#" data-videocontainer="#video3">pause</a>
+        </p>
+    </div>
+</div>
+<script type="text/javascript">
+    $(function() {
+        $.each($('.btn.play'), function (i, e) {
+            var el = $(e);
+            
+            el.click(function () {
+                var container = el.data().videocontainer;
+                $(container)[0].play();
+            });
+        });
+        $.each($('.btn.pause'), function (i, e) {
+            var el = $(e);
+            el.click(function () {
+                var container = el.data().videocontainer;
+                $(container)[0].pause();
+            });
+        });
+        
+        //$('#video1').videoUI();
+        //$('#video2').videoUI();
+        //$('#video3').videoUI();
+    });
+    
+    function onSilverlightError(sender, args) {
+        var appSource = "";
+        if (sender != null && sender != 0) {
+            appSource = sender.getHost().Source;
+        }
+
+        var errorType = args.ErrorType;
+        var iErrorCode = args.ErrorCode;
+
+        if (errorType == "ImageError" || errorType == "MediaError") {
+            return;
+        }
+
+        var errMsg = "Unhandled Error in Silverlight Application " + appSource + "\n";
+
+        errMsg += "Code: " + iErrorCode + "    \n";
+        errMsg += "Category: " + errorType + "       \n";
+        errMsg += "Message: " + args.ErrorMessage + "     \n";
+
+        if (errorType == "ParserError") {
+            errMsg += "File: " + args.xamlFile + "     \n";
+            errMsg += "Line: " + args.lineNumber + "     \n";
+            errMsg += "Position: " + args.charPosition + "     \n";
+        }
+        else if (errorType == "RuntimeError") {
+            if (args.lineNumber != 0) {
+                errMsg += "Line: " + args.lineNumber + "     \n";
+                errMsg += "Position: " + args.charPosition + "     \n";
+            }
+            errMsg += "MethodName: " + args.methodName + "     \n";
+        }
+
+        throw new Error(errMsg);
+    }
+</script>
